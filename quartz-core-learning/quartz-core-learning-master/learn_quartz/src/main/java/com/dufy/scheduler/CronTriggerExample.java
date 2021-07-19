@@ -15,13 +15,14 @@
  * 
  */
 
-package com.dufy.learn;
+package com.dufy.scheduler;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.DateBuilder.evenMinuteDate;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
+import com.dufy.job.HelloCronJob;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -73,7 +74,7 @@ public class CronTriggerExample {
         log.info(job.getKey() + " will run at: " + runTime);
 
         // 启动调度器
-        //sched.start();
+        sched.start();
 
         log.info("------- Started Scheduler -----------------");
 
@@ -94,8 +95,8 @@ public class CronTriggerExample {
     public static void main(String[] args) throws Exception {
 
         CronTriggerExample example = new CronTriggerExample();
-        //example.run();
-        example.start();
+        example.run();
+//        example.start();
     }
     
     /**

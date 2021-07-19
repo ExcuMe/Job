@@ -15,9 +15,8 @@
  * 
  */
  
-package com.dufy.learn;
+package com.dufy.job;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

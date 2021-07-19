@@ -113,7 +113,7 @@ CREATE TABLE `qrtz_job_details` (
 -- ----------------------------
 -- Records of qrtz_job_details
 -- ----------------------------
-INSERT INTO `qrtz_job_details` VALUES ('dufy_test', 'job1', 'group1', null, 'com.dufy.learn.HelloJob', '0', '0', '0', '0', 0x230D0A234D6F6E204465632030352031353A30303A34332043535420323031360D0A);
+INSERT INTO `qrtz_job_details` VALUES ('dufy_test', 'job1', 'group1', null, 'com.dufy.scheduler.HelloJob', '0', '0', '0', '0', 0x230D0A234D6F6E204465632030352031353A30303A34332043535420323031360D0A);
 
 -- ----------------------------
 -- Table structure for qrtz_locks

@@ -1,10 +1,10 @@
-package com.dufy.learn;
+package com.dufy.scheduler;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
+import com.dufy.job.HelloSimpleJob;
 import org.quartz.CronTrigger;
-import org.quartz.DateBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
@@ -16,7 +16,6 @@ import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.jdbcjobstore.JobStoreSupport;
 import org.quartz.impl.jdbcjobstore.JobStoreTX;
-import org.quartz.spi.JobStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,33 +57,42 @@ public class SimpleTriggerExample {
 	 */
     public void register(String jobName,String jobGroup,String triggerName,String triggerGroup,long afterTime) throws Exception {
 
-        log.info("------- Initializing ----------------------");
+        log.info("------- Initializing schedulerFactory and  scheduler----------------------");
 
         //初始化调度器工厂
-        SchedulerFactory sf = new StdSchedulerFactory();
+        SchedulerFactory schedulerFactory = new StdSchedulerFactory();
+
         //初始化调度器
-        Scheduler sched = sf.getScheduler();
+        Scheduler scheduler = schedulerFactory.getScheduler();
         
 
         log.info("------- Initialization Complete -----------");
 
         // 获取当前时间的afterTime s之后
-        long time=  System.currentTimeMillis() + afterTime;
+        long time =  System.currentTimeMillis() + afterTime;
         Date runTime = new Date(time);
 
         log.info("------- Scheduling Job  start-------------------");
 
         // 定义job
         // 在quartz中，有组的概念，组+job名称 唯一的
-        JobDetail job = newJob(HelloSimpleJob.class).withIdentity(jobName, jobGroup).build();
+        JobDetail job = newJob(HelloSimpleJob.class)
+				.withIdentity(jobName, jobGroup)
+				.build();
 
         //是否重复
         // SimpleScheduleBuilder schedBuilder = SimpleScheduleBuilder.repeatSecondlyForTotalCount(1);
 		// 定义触发器，在下一分钟启动
-        Trigger trigger = newTrigger().withIdentity(triggerName, triggerGroup).withSchedule(SimpleScheduleBuilder.simpleSchedule()).startAt(runTime).build();
+        Trigger trigger = newTrigger()
+				.withIdentity(triggerName, triggerGroup)
+				.withSchedule(SimpleScheduleBuilder.simpleSchedule()
+				              .withIntervalInSeconds(5) // 每隔五秒执行一次  一直执行
+				              .repeatForever())
+				.startAt(runTime)
+				.build();
 
         // 将job注册到调度器
-        sched.scheduleJob(job, trigger);
+        scheduler.scheduleJob(job, trigger);
         
         log.info("------- Scheduling Job  complete-------------------");
         
@@ -105,13 +113,12 @@ public class SimpleTriggerExample {
 	        Scheduler sched = sf.getScheduler();
 	        
 	        sched.start();
-	        
-	        /*
+
 		        // 等待65秒
-		        log.info("------- Waiting 65 seconds... -------------");
+		        log.info("------- Waiting 50 seconds... -------------");
 		        try {
-		            // wait 65 seconds to show job
-		            Thread.sleep(5L * 1000L);
+		            // wait 50 seconds to show job
+		            Thread.sleep(50L * 1000L);
 		            // executing...
 		        } catch (Exception e) {
 		            //
@@ -121,7 +128,7 @@ public class SimpleTriggerExample {
 		        log.info("------- Shutting Down ---------------------");
 		        sched.shutdown(true);
 		        log.info("------- Shutdown Complete -----------------");
-		     */
+
 		} catch (SchedulerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

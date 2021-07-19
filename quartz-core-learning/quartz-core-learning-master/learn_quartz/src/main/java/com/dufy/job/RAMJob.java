@@ -1,4 +1,4 @@
-package com.dufy.learn;
+package com.dufy.job;
 
 import java.util.Date;
 
@@ -15,7 +15,7 @@ public class RAMJob implements Job{
 	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		
-		_log.info("Say hello to Quartz" + new Date());
+		_log.info("RAMJob: Say hello to Quartz" + new Date());
 	}
 	
 }

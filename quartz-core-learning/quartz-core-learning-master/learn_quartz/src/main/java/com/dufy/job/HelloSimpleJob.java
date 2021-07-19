@@ -15,7 +15,7 @@
  * 
  */
  
-package com.dufy.learn;
+package com.dufy.job;
 
 import java.util.Date;
 
@@ -34,7 +34,7 @@ import org.quartz.JobExecutionException;
  */
 public class HelloSimpleJob implements Job {
 
-    private static Logger _log = LoggerFactory.getLogger(HelloSimpleJob.class);
+    private static Logger log = LoggerFactory.getLogger(HelloSimpleJob.class);
 
     /**
      * <p>
@@ -63,7 +63,7 @@ public class HelloSimpleJob implements Job {
     
 
         // Say Hello to the World and display the date/time
-    	_log.info("Hello Simple Trigger  World! - " + new Date());
+    	log.info("Hello Simple Trigger  World! - " + new Date());
         
     }
 

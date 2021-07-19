@@ -1,3 +1,6 @@
 /.idea/
 /quartz-demo/mvnw
 /quartz-demo/mvnw.cmd
+/quartz-core-learning/learn_quartz/learn_quartz.iml
+/quartz-core-learning/spring_quartz/spring_quartz.iml
+/quartz-core-learning/ssm_quartz/ssm_quartz.iml
