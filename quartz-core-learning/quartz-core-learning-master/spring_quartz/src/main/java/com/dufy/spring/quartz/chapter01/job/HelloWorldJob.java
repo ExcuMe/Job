@@ -18,7 +18,8 @@ import org.slf4j.LoggerFactory;
 public class HelloWorldJob implements Job{
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
-	
+
+	@Override
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
 		log.info("This is a first spring combine quartz !");
 		log.info("Welcome to Spring_Quartz World!"+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) );
