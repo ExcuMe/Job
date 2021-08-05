@@ -95,6 +95,7 @@ public class JobThread extends Thread{
 
     	// init
     	try {
+			//通过反射的方式获取执行器的方法 IJobHandler
 			handler.init();
 		} catch (Throwable e) {
     		logger.error(e.getMessage(), e);
@@ -108,6 +109,7 @@ public class JobThread extends Thread{
             TriggerParam triggerParam = null;
             try {
 				// to check toStop signal, we need cycle, so wo cannot use queue.take(), instand of poll(timeout)
+				//从队列中取出任务
 				triggerParam = triggerQueue.poll(3L, TimeUnit.SECONDS);
 				if (triggerParam!=null) {
 					running = true;
@@ -140,6 +142,9 @@ public class JobThread extends Thread{
 									// init job context
 									XxlJobContext.setXxlJobContext(xxlJobContext);
 
+									/**
+									 * 执行任务
+									 */
 									handler.execute();
 									return true;
 								}

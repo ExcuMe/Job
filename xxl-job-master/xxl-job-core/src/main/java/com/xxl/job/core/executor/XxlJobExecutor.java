@@ -78,6 +78,10 @@ public class XxlJobExecutor  {
         TriggerCallbackThread.getInstance().start();
 
         // init executor-server
+        /**
+         * 初始化Executor服务器,通过netty启动服务器
+         */
+
         initEmbedServer(address, ip, port, appname, accessToken);
     }
     public void destroy(){
@@ -153,6 +157,9 @@ public class XxlJobExecutor  {
         }
 
         // start
+        /**
+         * 启动netty的服务器重要代码
+         */
         embedServer = new EmbedServer();
         embedServer.start(address, port, appname, accessToken);
     }
@@ -183,6 +190,10 @@ public class XxlJobExecutor  {
     // ---------------------- job thread repository ----------------------
     private static ConcurrentMap<Integer, JobThread> jobThreadRepository = new ConcurrentHashMap<Integer, JobThread>();
     public static JobThread registJobThread(int jobId, IJobHandler handler, String removeOldReason){
+        /**
+         * 执行任务的线程JobThread
+         * newJobThread.start()，看JobThread的run方法
+         */
         JobThread newJobThread = new JobThread(jobId, handler);
         newJobThread.start();
         logger.info(">>>>>>>>>>> xxl-job regist JobThread success, jobId:{}, handler:{}", new Object[]{jobId, handler});

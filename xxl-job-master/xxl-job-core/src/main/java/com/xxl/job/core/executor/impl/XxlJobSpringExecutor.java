@@ -151,6 +151,20 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
                 }
 
                 // registry jobhandler
+                /**
+                 * 将任务注册到jobHandlerRepository
+                 * ConcurrentMap<String, IJobHandler> jobHandlerRepository = new ConcurrentHashMap<String, IJobHandler>();
+                 *
+                 * MethodJobHandler的参数说明@XxlJob(value="自定义jobhandler名称", init = "JobHandler初始化方法", destroy = "JobHandler销毁方法")
+                 * bean 要执行的bean
+                 * executeMethod 自定义jobhandler名称
+                 * initMethod    JobHandler初始化方法
+                 * destroyMethod JobHandler销毁方法
+                 *
+                 * registJobHandler
+                 * name 注解里面value的值(自定义jobhandler名称)
+                 * MethodJobHandler 封装各个执行方法的
+                 */
                 registJobHandler(name, new MethodJobHandler(bean, executeMethod, initMethod, destroyMethod));
             }
         }

@@ -12,7 +12,9 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,9 +40,19 @@ public class SampleXxlJob {
     public void demoJobHandler() throws Exception {
         XxlJobHelper.log("XXL-JOB, Hello World.");
 
-        for (int i = 0; i < 5; i++) {
-            XxlJobHelper.log("beat at:" + i);
-            TimeUnit.SECONDS.sleep(2);
+        System.out.println("#######################################");
+        try {
+            for (int i = 0; i < 5; i++) {
+                XxlJobHelper.log("beat at:" + i);
+                System.out.println("demoJobHandler 任务执行" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                TimeUnit.SECONDS.sleep(2);
+            }
+        }catch (InterruptedException e){
+            logger.error("任务停止");
+            throw e;
+        }catch (Exception e){
+            logger.error("系统错误");
+            throw e;
         }
         // default success
     }

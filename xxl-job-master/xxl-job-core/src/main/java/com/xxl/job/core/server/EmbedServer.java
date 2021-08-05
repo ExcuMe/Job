@@ -65,6 +65,8 @@ public class EmbedServer {
 
                 try {
                     // start server
+                    /** start server 启动netty的服务器
+                     */
                     ServerBootstrap bootstrap = new ServerBootstrap();
                     bootstrap.group(bossGroup, workerGroup)
                             .channel(NioServerSocketChannel.class)
@@ -75,6 +77,9 @@ public class EmbedServer {
                                             .addLast(new IdleStateHandler(0, 0, 30 * 3, TimeUnit.SECONDS))  // beat 3N, close if idle
                                             .addLast(new HttpServerCodec())
                                             .addLast(new HttpObjectAggregator(5 * 1024 * 1024))  // merge request & reponse to FULL
+                                    /**
+                                     * 处理接收admin请求的就在EmbedHttpServerHandler里面
+                                     */
                                             .addLast(new EmbedHttpServerHandler(executorBiz, accessToken, bizThreadPool));
                                 }
                             })
@@ -174,6 +179,14 @@ public class EmbedServer {
             });
         }
 
+        /**
+         * 主要处理请求的方法
+         * @param httpMethod
+         * @param uri
+         * @param requestData
+         * @param accessTokenReq
+         * @return
+         */
         private Object process(HttpMethod httpMethod, String uri, String requestData, String accessTokenReq) {
 
             // valid
@@ -190,6 +203,7 @@ public class EmbedServer {
             }
 
             // services mapping
+            // 执行器根据不同的请求调用不同的执行方法
             try {
                 if ("/beat".equals(uri)) {
                     return executorBiz.beat();
@@ -197,7 +211,13 @@ public class EmbedServer {
                     IdleBeatParam idleBeatParam = GsonTool.fromJson(requestData, IdleBeatParam.class);
                     return executorBiz.idleBeat(idleBeatParam);
                 } else if ("/run".equals(uri)) {
+                    /**
+                     * 运行程序最终调用的就是该方法
+                     */
                     TriggerParam triggerParam = GsonTool.fromJson(requestData, TriggerParam.class);
+                    /**
+                     * 执行任务的重要方法
+                     */
                     return executorBiz.run(triggerParam);
                 } else if ("/kill".equals(uri)) {
                     KillParam killParam = GsonTool.fromJson(requestData, KillParam.class);
